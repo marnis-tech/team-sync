@@ -1,10 +1,16 @@
 // Extensions for the whole team, same format as .vscode/extensions.json.
 // recommendations: installed when missing. Team Sync never uninstalls extensions.
 // After editing run "npm run team-config" to regenerate team-config.json.
+// Markdown formatting, toolbar and "copy as HTML" are built into Team Sync itself.
 {
   "recommendations": [
+    // Spell checking, German dictionary
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-german",
+    // Markdown editing and formatting
+    "yzhang.markdown-all-in-one",
     "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig"
+    // Snippets
+    "inu1255.easy-snippet"
   ]
 }
