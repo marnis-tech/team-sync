@@ -1,6 +1,6 @@
-# Team Sync
+# Marnis Team Sync
 
-Keep VS Code settings and extensions consistent across your whole team. Team Sync loads one central `team-config.json` from a URL, installs missing extensions and writes the shared settings into every team member's user settings.
+Keep VS Code settings and extensions consistent across your whole team. Marnis Team Sync ("Team Sync" in the UI) loads one central `team-config.json` from a URL, installs missing extensions and writes the shared settings into every team member's user settings.
 
 It also ships Markdown tools for teams that write content in Markdown: formatting commands, an editor toolbar and "copy as HTML" with configurable output (for example Bootstrap table classes for an online shop).
 

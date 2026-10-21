@@ -1,6 +1,6 @@
 {
-  "name": "team-sync",
-  "displayName": "Team Sync",
+  "name": "marnis-team-sync",
+  "displayName": "Marnis Team Sync",
   "description": "Keeps VS Code settings and extensions in sync across a team from one central configuration file.",
   "version": "0.1.0",
   "publisher": "marnis-tech",

@@ -173,7 +173,7 @@ const tests: Test[] = [
 ];
 
 export async function run(): Promise<void> {
-  const extension = vscode.extensions.getExtension('marnis-tech.team-sync');
+  const extension = vscode.extensions.getExtension('marnis-tech.marnis-team-sync');
   assert.ok(extension, 'extension not found');
   await extension.activate();
 

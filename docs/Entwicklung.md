@@ -1,5 +1,7 @@
 # Team Sync: Entwicklung, Pflege und Release
 
+Extension-ID: `marnis-tech.marnis-team-sync`, Anzeigename „Marnis Team Sync", in der Oberfläche kurz „Team Sync". Der Name `team-sync` ist im Visual Studio Marketplace bereits vergeben (Namen sind dort über alle Publisher eindeutig).
+
 ## Überblick
 
 Team Sync lädt eine zentrale `team-config.json` von der URL aus `teamSync.configUrl`, installiert fehlende Extensions und schreibt Einstellungen in die User Settings der Teammitglieder. Extensions werden nie deinstalliert oder deaktiviert: Team Sync ergänzt nur, was für die gemeinsamen Settings gebraucht wird. Angewendet wird nur, wenn sich `version` gegenüber der zuletzt angewendeten Version (im `globalState`) unterscheidet. Die README.md ist die Marketplace-Seite und deshalb englisch.
@@ -59,10 +61,10 @@ npm test             # Unit-Tests
 npm run test:integration   # Integrationstests in VS Code 1.90 (lädt VS Code beim ersten Mal nach .vscode-test/)
 VSCODE_VERSION=stable npm run test:integration   # dasselbe mit der aktuellen VS-Code-Version
 npm run watch        # Bundle bei Änderungen neu bauen
-npm run package      # team-sync-<version>.vsix erzeugen
+npm run package      # marnis-team-sync-<version>.vsix erzeugen
 ```
 
-Zum Ausprobieren in VS Code: `npm run package`, dann `code --install-extension team-sync-<version>.vsix`, oder per F5 einen Extension Development Host starten (dafür ggf. eine `launch.json` mit `"type": "extensionHost"` anlegen). Zum lokalen Testen der Config reicht `npx http-server team -p 8080` o. ä. und `teamSync.configUrl` = `http://localhost:8080/team-config.json` (HTTP ist nur für localhost erlaubt).
+Zum Ausprobieren in VS Code: `npm run package`, dann `code --install-extension marnis-team-sync-<version>.vsix`, oder per F5 einen Extension Development Host starten (dafür ggf. eine `launch.json` mit `"type": "extensionHost"` anlegen). Zum lokalen Testen der Config reicht `npx http-server team -p 8080` o. ä. und `teamSync.configUrl` = `http://localhost:8080/team-config.json` (HTTP ist nur für localhost erlaubt).
 
 ## Anpassungen an der Extension
 

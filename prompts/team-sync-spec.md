@@ -1,6 +1,6 @@
 # Spec: VS Code extension "team-sync"
 
-Build a VS Code extension "team-sync" (publisher: marnis-tech) in TypeScript that centrally syncs user settings and extensions for a team.
+Build a VS Code extension "marnis-team-sync" (display name "Marnis Team Sync", shown as "Team Sync" in the UI; publisher: marnis-tech; the name "team-sync" is taken on the VS Marketplace) in TypeScript that centrally syncs user settings and extensions for a team.
 
 ## Behaviour
 - Activation: `onStartupFinished`, then a sync every 60 minutes (setting `teamSync.syncIntervalMinutes`, minimum 5).
