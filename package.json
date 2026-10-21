@@ -1,0 +1,117 @@
+{
+  "name": "team-sync",
+  "displayName": "Team Sync",
+  "description": "Keeps VS Code settings and extensions in sync across a team from one central configuration file.",
+  "version": "0.1.0",
+  "publisher": "marnis-tech",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marnis-tech/team-sync.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marnis-tech/team-sync/issues"
+  },
+  "homepage": "https://github.com/marnis-tech/team-sync#readme",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "team",
+    "settings",
+    "sync",
+    "extensions",
+    "onboarding"
+  ],
+  "galleryBanner": {
+    "color": "#1e3a5f",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "teamSync.syncNow",
+        "title": "Jetzt synchronisieren",
+        "category": "Team Sync",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "teamSync.setToken",
+        "title": "Token setzen",
+        "category": "Team Sync"
+      },
+      {
+        "command": "teamSync.clearToken",
+        "title": "Token entfernen",
+        "category": "Team Sync"
+      },
+      {
+        "command": "teamSync.showLog",
+        "title": "Log anzeigen",
+        "category": "Team Sync"
+      }
+    ],
+    "configuration": {
+      "title": "Team Sync",
+      "properties": {
+        "teamSync.configUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "order": 1,
+          "markdownDescription": "URL der zentralen `team-config.json` (nur HTTPS, HTTP nur für `localhost`). Ein optionaler Bearer-Token wird über den Befehl **Team Sync: Token setzen** hinterlegt."
+        },
+        "teamSync.syncIntervalMinutes": {
+          "type": "number",
+          "default": 60,
+          "minimum": 5,
+          "maximum": 1440,
+          "scope": "application",
+          "order": 2,
+          "markdownDescription": "Abstand der automatischen Synchronisation in Minuten (5 bis 1440)."
+        }
+      }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "team-config.json",
+        "url": "./schemas/team-config.schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run typecheck && node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "pretest": "tsc",
+    "test": "node --test \"out/test/**/*.test.js\"",
+    "team-config": "tsc && node out/src/cli/buildTeamConfig.js",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "4.0.0",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

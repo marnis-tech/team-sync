@@ -1,0 +1,10 @@
+// Extensions for the whole team, same format as .vscode/extensions.json.
+// recommendations: installed when missing. Team Sync never uninstalls extensions.
+// After editing run "npm run team-config" to regenerate team-config.json.
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig"
+  ]
+}

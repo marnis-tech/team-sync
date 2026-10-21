@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+*.vsix
+.DS_Store
+
+# Local AI assistant files, every developer keeps their own
+CLAUDE.md
+.claude/

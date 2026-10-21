@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Team Sync configuration",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Changes are applied on clients only when this number differs from the last applied version."
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "install": {
+          "type": "array",
+          "description": "Extension IDs (publisher.name) that are installed when missing. Installed extensions are never removed.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9-]*\\.[A-Za-z0-9][A-Za-z0-9_-]*$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Written to the user settings. A value of null removes the user setting. Settings dropped from this object are reset on clients that still have the team value.",
+      "propertyNames": {
+        "not": {
+          "pattern": "^teamSync\\."
+        }
+      }
+    }
+  }
+}

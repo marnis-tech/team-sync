@@ -1,0 +1,13 @@
+// User settings for the whole team, same format as the VS Code settings.json.
+// After editing run "npm run team-config" to regenerate team-config.json.
+// A value of null removes the setting from the users' settings. A setting deleted from
+// this file is reset on clients that still have the team value (personal changes stay).
+{
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  }
+}

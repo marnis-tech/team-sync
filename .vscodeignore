@@ -1,0 +1,9 @@
+# Ship only the bundle and the files the marketplace needs.
+**
+!dist/extension.js
+!schemas/team-config.schema.json
+!images/icon.png
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE
