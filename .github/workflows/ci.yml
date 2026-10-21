@@ -20,6 +20,10 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
+      - name: Integration tests in VS Code 1.90 and stable
+        run: |
+          xvfb-run -a npm run test:integration
+          VSCODE_VERSION=stable xvfb-run -a npm run test:integration
       - name: Check that team/team-config.json is up to date
         run: npm run team-config -- --check
       - run: npx vsce package --no-dependencies

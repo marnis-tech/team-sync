@@ -16,3 +16,5 @@ All notable changes to this extension are documented here. The format follows [K
 - Status bar entry with config version and sync state.
 - JSON schema for `team-config.json`.
 - Generator that builds `team-config.json` from `settings.json` and `extensions.json`.
+- Markdown formatting commands (inline formats, headings, lists, checklists, quotes, code blocks, links, images, tables) with multi-cursor support, context menu and optional editor toolbar.
+- "Markdown: Als HTML kopieren" with configurable table classes, removal of empty table headers and typography, also as a button in the Markdown preview.

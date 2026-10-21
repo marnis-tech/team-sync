@@ -18,11 +18,14 @@
     "Other"
   ],
   "keywords": [
-    "team",
-    "settings",
-    "sync",
     "extensions",
-    "onboarding"
+    "html",
+    "markdown",
+    "onboarding",
+    "settings",
+    "shopware",
+    "sync",
+    "team"
   ],
   "galleryBanner": {
     "color": "#1e3a5f",
@@ -67,33 +70,653 @@
         "command": "teamSync.showLog",
         "title": "Log anzeigen",
         "category": "Team Sync"
+      },
+      {
+        "command": "teamSync.markdown.bold",
+        "title": "Fett",
+        "category": "Markdown",
+        "icon": "$(bold)"
+      },
+      {
+        "command": "teamSync.markdown.italic",
+        "title": "Kursiv",
+        "category": "Markdown",
+        "icon": "$(italic)"
+      },
+      {
+        "command": "teamSync.markdown.strikethrough",
+        "title": "Durchgestrichen",
+        "category": "Markdown",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "teamSync.markdown.inlineCode",
+        "title": "Code im Text",
+        "category": "Markdown",
+        "icon": "$(code)"
+      },
+      {
+        "command": "teamSync.markdown.heading",
+        "title": "Überschrift ...",
+        "category": "Markdown",
+        "icon": "$(symbol-parameter)"
+      },
+      {
+        "command": "teamSync.markdown.heading1",
+        "title": "Überschrift 1",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.heading2",
+        "title": "Überschrift 2",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.heading3",
+        "title": "Überschrift 3",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.heading4",
+        "title": "Überschrift 4",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.heading5",
+        "title": "Überschrift 5",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.heading6",
+        "title": "Überschrift 6",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.bullets",
+        "title": "Aufzählung",
+        "category": "Markdown",
+        "icon": "$(list-unordered)"
+      },
+      {
+        "command": "teamSync.markdown.numbers",
+        "title": "Nummerierte Liste",
+        "category": "Markdown",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "teamSync.markdown.checkboxes",
+        "title": "Checkliste",
+        "category": "Markdown",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "teamSync.markdown.quote",
+        "title": "Zitat",
+        "category": "Markdown",
+        "icon": "$(quote)"
+      },
+      {
+        "command": "teamSync.markdown.codeBlock",
+        "title": "Codeblock",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.link",
+        "title": "Link",
+        "category": "Markdown",
+        "icon": "$(link)"
+      },
+      {
+        "command": "teamSync.markdown.image",
+        "title": "Bild",
+        "category": "Markdown",
+        "icon": "$(file-media)"
+      },
+      {
+        "command": "teamSync.markdown.table",
+        "title": "Tabelle einfügen (ohne Kopfzeile)",
+        "category": "Markdown",
+        "icon": "$(table)"
+      },
+      {
+        "command": "teamSync.markdown.tableWithHeader",
+        "title": "Tabelle einfügen (mit Kopfzeile)",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.showCommands",
+        "title": "Formatierung auswählen ...",
+        "category": "Markdown"
+      },
+      {
+        "command": "teamSync.markdown.copyAsHtml",
+        "title": "Als HTML kopieren",
+        "category": "Markdown",
+        "icon": "$(clippy)"
       }
     ],
-    "configuration": {
-      "title": "Team Sync",
-      "properties": {
-        "teamSync.configUrl": {
-          "type": "string",
-          "default": "",
-          "scope": "application",
-          "order": 1,
-          "markdownDescription": "URL der zentralen `team-config.json` (nur HTTPS, HTTP nur für `localhost`). Ein optionaler Bearer-Token wird über den Befehl **Team Sync: Token setzen** hinterlegt."
-        },
-        "teamSync.syncIntervalMinutes": {
-          "type": "number",
-          "default": 60,
-          "minimum": 5,
-          "maximum": 1440,
-          "scope": "application",
-          "order": 2,
-          "markdownDescription": "Abstand der automatischen Synchronisation in Minuten (5 bis 1440)."
+    "configuration": [
+      {
+        "title": "Team Sync",
+        "properties": {
+          "teamSync.configUrl": {
+            "type": "string",
+            "default": "",
+            "scope": "application",
+            "order": 1,
+            "markdownDescription": "URL der zentralen `team-config.json` (nur HTTPS, HTTP nur für `localhost`). Ein optionaler Bearer-Token wird über den Befehl **Team Sync: Token setzen** hinterlegt."
+          },
+          "teamSync.syncIntervalMinutes": {
+            "type": "number",
+            "default": 60,
+            "minimum": 5,
+            "maximum": 1440,
+            "scope": "application",
+            "order": 2,
+            "markdownDescription": "Abstand der automatischen Synchronisation in Minuten (5 bis 1440)."
+          }
+        }
+      },
+      {
+        "title": "Markdown: Formatierung",
+        "properties": {
+          "teamSync.markdown.bulletMarker": {
+            "type": "string",
+            "enum": [
+              "-",
+              "*",
+              "+"
+            ],
+            "default": "-",
+            "order": 1,
+            "markdownDescription": "Zeichen für Aufzählungen und Checklisten."
+          },
+          "teamSync.markdown.boldMarker": {
+            "type": "string",
+            "enum": [
+              "**",
+              "__"
+            ],
+            "default": "**",
+            "order": 2,
+            "markdownDescription": "Zeichen für fetten Text."
+          },
+          "teamSync.markdown.italicMarker": {
+            "type": "string",
+            "enum": [
+              "_",
+              "*"
+            ],
+            "default": "_",
+            "order": 3,
+            "markdownDescription": "Zeichen für kursiven Text."
+          }
+        }
+      },
+      {
+        "title": "Markdown: Toolbar",
+        "properties": {
+          "teamSync.markdown.toolbar.heading": {
+            "type": "boolean",
+            "default": false,
+            "order": 2,
+            "markdownDescription": "Button **Überschrift** in der Editor-Titelleiste von Markdown-Dateien anzeigen. Öffnet eine Auswahl der Ebenen 1 bis 6, die aktive Ebene ist markiert und wird beim Auswählen entfernt."
+          },
+          "teamSync.markdown.toolbar.bold": {
+            "type": "boolean",
+            "default": false,
+            "order": 3,
+            "markdownDescription": "Button **Fett** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.italic": {
+            "type": "boolean",
+            "default": false,
+            "order": 4,
+            "markdownDescription": "Button **Kursiv** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.strikethrough": {
+            "type": "boolean",
+            "default": false,
+            "order": 5,
+            "markdownDescription": "Button **Durchgestrichen** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.bullets": {
+            "type": "boolean",
+            "default": false,
+            "order": 6,
+            "markdownDescription": "Button **Aufzählung** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.numbers": {
+            "type": "boolean",
+            "default": false,
+            "order": 7,
+            "markdownDescription": "Button **Nummerierte Liste** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.checkboxes": {
+            "type": "boolean",
+            "default": false,
+            "order": 8,
+            "markdownDescription": "Button **Checkliste** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.quote": {
+            "type": "boolean",
+            "default": false,
+            "order": 9,
+            "markdownDescription": "Button **Zitat** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.link": {
+            "type": "boolean",
+            "default": false,
+            "order": 10,
+            "markdownDescription": "Button **Link** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.image": {
+            "type": "boolean",
+            "default": false,
+            "order": 11,
+            "markdownDescription": "Button **Bild** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.table": {
+            "type": "boolean",
+            "default": false,
+            "order": 12,
+            "markdownDescription": "Button **Tabelle einfügen (ohne Kopfzeile)** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.copyAsHtml": {
+            "type": "boolean",
+            "default": false,
+            "order": 13,
+            "markdownDescription": "Button **Als HTML kopieren** in der Editor-Titelleiste von Markdown-Dateien anzeigen."
+          },
+          "teamSync.markdown.toolbar.previewCopyAsHtml": {
+            "type": "boolean",
+            "default": false,
+            "order": 100,
+            "markdownDescription": "Button **Als HTML kopieren** in der Titelleiste der Markdown-Vorschau anzeigen. Kopiert das HTML des ganzen Dokuments."
+          },
+          "teamSync.markdown.toolbar.more": {
+            "type": "boolean",
+            "default": false,
+            "order": 99,
+            "markdownDescription": "Button **Weitere Formatierungen** in der Editor-Titelleiste: ein Ausklappmenü mit allen Markdown-Befehlen, die nicht schon als eigener Button angezeigt werden."
+          }
+        }
+      },
+      {
+        "title": "Markdown: Als HTML kopieren",
+        "properties": {
+          "teamSync.markdown.tableClass": {
+            "type": "string",
+            "default": "table table-sm align-top table-hover",
+            "order": 1,
+            "markdownDescription": "CSS-Klassen für jede `<table>` beim Befehl **Markdown: Als HTML kopieren**. Leer lassen für keine Klasse."
+          },
+          "teamSync.markdown.removeEmptyTableHeader": {
+            "type": "boolean",
+            "default": true,
+            "order": 2,
+            "markdownDescription": "Leere Tabellen-Kopfzeilen (`| | |`) weglassen. Markdown verlangt immer eine Kopfzeile, im HTML entsteht so kein leeres `<thead>`."
+          },
+          "teamSync.markdown.breaks": {
+            "type": "boolean",
+            "default": true,
+            "order": 3,
+            "markdownDescription": "Einfache Zeilenumbrüche in Absätzen als `<br>` übernehmen."
+          },
+          "teamSync.markdown.typographer": {
+            "type": "boolean",
+            "default": true,
+            "order": 4,
+            "markdownDescription": "Typografische Ersetzungen, z. B. `--` zu Halbgeviertstrich, `...` zu Auslassungspunkten und gerade zu typografischen Anführungszeichen."
+          },
+          "teamSync.markdown.quotes": {
+            "type": "string",
+            "default": "„“‚‘",
+            "order": 5,
+            "markdownDescription": "Anführungszeichen für die Typografie: doppelt öffnend, doppelt schließend, einfach öffnend, einfach schließend (genau 4 Zeichen)."
+          },
+          "teamSync.markdown.linkify": {
+            "type": "boolean",
+            "default": true,
+            "order": 6,
+            "markdownDescription": "URLs im Text automatisch verlinken."
+          },
+          "teamSync.markdown.html": {
+            "type": "boolean",
+            "default": false,
+            "order": 7,
+            "markdownDescription": "HTML-Tags im Markdown durchreichen statt sie zu maskieren."
+          }
         }
       }
-    },
+    ],
     "jsonValidation": [
       {
         "fileMatch": "team-config.json",
         "url": "./schemas/team-config.schema.json"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "teamSync.markdown.context",
+          "when": "editorLangId == markdown",
+          "group": "1_modification@9"
+        },
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "when": "editorLangId == markdown",
+          "group": "9_cutcopypaste@9"
+        }
+      ],
+      "teamSync.markdown.context": [
+        {
+          "command": "teamSync.markdown.heading",
+          "group": "2_block@0"
+        },
+        {
+          "command": "teamSync.markdown.bold",
+          "group": "1_inline@1"
+        },
+        {
+          "command": "teamSync.markdown.italic",
+          "group": "1_inline@2"
+        },
+        {
+          "command": "teamSync.markdown.strikethrough",
+          "group": "1_inline@3"
+        },
+        {
+          "command": "teamSync.markdown.inlineCode",
+          "group": "1_inline@4"
+        },
+        {
+          "command": "teamSync.markdown.link",
+          "group": "1_inline@5"
+        },
+        {
+          "command": "teamSync.markdown.image",
+          "group": "1_inline@6"
+        },
+        {
+          "command": "teamSync.markdown.bullets",
+          "group": "2_block@4"
+        },
+        {
+          "command": "teamSync.markdown.numbers",
+          "group": "2_block@5"
+        },
+        {
+          "command": "teamSync.markdown.checkboxes",
+          "group": "2_block@6"
+        },
+        {
+          "command": "teamSync.markdown.quote",
+          "group": "2_block@7"
+        },
+        {
+          "command": "teamSync.markdown.codeBlock",
+          "group": "2_block@8"
+        },
+        {
+          "command": "teamSync.markdown.table",
+          "group": "3_table@1"
+        },
+        {
+          "command": "teamSync.markdown.tableWithHeader",
+          "group": "3_table@2"
+        },
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "group": "4_export@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "when": "activeWebviewPanelId == 'markdown.preview' && config.teamSync.markdown.toolbar.previewCopyAsHtml",
+          "group": "navigation@0"
+        },
+        {
+          "command": "teamSync.markdown.heading",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.heading",
+          "group": "navigation@2"
+        },
+        {
+          "command": "teamSync.markdown.bold",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.bold",
+          "group": "navigation@3"
+        },
+        {
+          "command": "teamSync.markdown.italic",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.italic",
+          "group": "navigation@4"
+        },
+        {
+          "command": "teamSync.markdown.strikethrough",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.strikethrough",
+          "group": "navigation@5"
+        },
+        {
+          "command": "teamSync.markdown.bullets",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.bullets",
+          "group": "navigation@6"
+        },
+        {
+          "command": "teamSync.markdown.numbers",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.numbers",
+          "group": "navigation@7"
+        },
+        {
+          "command": "teamSync.markdown.checkboxes",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.checkboxes",
+          "group": "navigation@8"
+        },
+        {
+          "command": "teamSync.markdown.quote",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.quote",
+          "group": "navigation@9"
+        },
+        {
+          "command": "teamSync.markdown.link",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.link",
+          "group": "navigation@10"
+        },
+        {
+          "command": "teamSync.markdown.image",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.image",
+          "group": "navigation@11"
+        },
+        {
+          "command": "teamSync.markdown.table",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.table",
+          "group": "navigation@12"
+        },
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.copyAsHtml",
+          "group": "navigation@13"
+        },
+        {
+          "submenu": "teamSync.markdown.more",
+          "when": "editorLangId == markdown && config.teamSync.markdown.toolbar.more",
+          "group": "navigation@14"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "teamSync.markdown.bold",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.italic",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.strikethrough",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.inlineCode",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading1",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading2",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading3",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading4",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading5",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading6",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.bullets",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.numbers",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.checkboxes",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.quote",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.codeBlock",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.link",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.image",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.table",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.tableWithHeader",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.showCommands",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "when": "editorLangId == markdown"
+        },
+        {
+          "command": "teamSync.markdown.heading",
+          "when": "editorLangId == markdown"
+        }
+      ],
+      "teamSync.markdown.more": [
+        {
+          "command": "teamSync.markdown.bold",
+          "group": "1_inline@1",
+          "when": "!config.teamSync.markdown.toolbar.bold"
+        },
+        {
+          "command": "teamSync.markdown.italic",
+          "group": "1_inline@2",
+          "when": "!config.teamSync.markdown.toolbar.italic"
+        },
+        {
+          "command": "teamSync.markdown.strikethrough",
+          "group": "1_inline@3",
+          "when": "!config.teamSync.markdown.toolbar.strikethrough"
+        },
+        {
+          "command": "teamSync.markdown.inlineCode",
+          "group": "1_inline@4"
+        },
+        {
+          "command": "teamSync.markdown.link",
+          "group": "1_inline@5",
+          "when": "!config.teamSync.markdown.toolbar.link"
+        },
+        {
+          "command": "teamSync.markdown.image",
+          "group": "1_inline@6",
+          "when": "!config.teamSync.markdown.toolbar.image"
+        },
+        {
+          "command": "teamSync.markdown.heading",
+          "group": "2_block@1",
+          "when": "!config.teamSync.markdown.toolbar.heading"
+        },
+        {
+          "command": "teamSync.markdown.bullets",
+          "group": "2_block@2",
+          "when": "!config.teamSync.markdown.toolbar.bullets"
+        },
+        {
+          "command": "teamSync.markdown.numbers",
+          "group": "2_block@3",
+          "when": "!config.teamSync.markdown.toolbar.numbers"
+        },
+        {
+          "command": "teamSync.markdown.checkboxes",
+          "group": "2_block@4",
+          "when": "!config.teamSync.markdown.toolbar.checkboxes"
+        },
+        {
+          "command": "teamSync.markdown.quote",
+          "group": "2_block@5",
+          "when": "!config.teamSync.markdown.toolbar.quote"
+        },
+        {
+          "command": "teamSync.markdown.codeBlock",
+          "group": "2_block@6"
+        },
+        {
+          "command": "teamSync.markdown.table",
+          "group": "3_table@1",
+          "when": "!config.teamSync.markdown.toolbar.table"
+        },
+        {
+          "command": "teamSync.markdown.tableWithHeader",
+          "group": "3_table@2"
+        },
+        {
+          "command": "teamSync.markdown.copyAsHtml",
+          "group": "4_export@1",
+          "when": "!config.teamSync.markdown.toolbar.copyAsHtml"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "teamSync.markdown.context",
+        "label": "Markdown"
+      },
+      {
+        "id": "teamSync.markdown.more",
+        "label": "Weitere Formatierungen",
+        "icon": "$(markdown)"
       }
     ]
   },
@@ -105,13 +728,18 @@
     "pretest": "tsc",
     "test": "node --test \"out/test/**/*.test.js\"",
     "team-config": "tsc && node out/src/cli/buildTeamConfig.js",
-    "package": "vsce package --no-dependencies"
+    "package": "vsce package --no-dependencies",
+    "test:integration": "npm run build && tsc && node out/test-integration/runTest.js"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
     "@types/vscode": "1.90.0",
+    "@vscode/test-electron": "3.1.0",
     "@vscode/vsce": "4.0.0",
     "esbuild": "0.28.2",
     "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "markdown-it": "15.0.3"
   }
 }

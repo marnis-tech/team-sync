@@ -1,7 +1,7 @@
 import { isPlainObject } from './util/json';
 
-/** Setting keys of this extension are managed locally and cannot be pushed by the team config. */
-export const RESERVED_SETTINGS_PREFIX = 'teamSync.';
+/** Settings that control the sync itself; the team config must not redirect or throttle it. */
+export const RESERVED_SETTINGS = new Set(['teamSync.configUrl', 'teamSync.syncIntervalMinutes']);
 
 const EXTENSION_ID_PATTERN = /^[a-z0-9][a-z0-9-]*\.[a-z0-9][a-z0-9_-]*$/i;
 const KNOWN_TOP_LEVEL_KEYS = new Set(['$schema', 'version', 'extensions', 'settings']);
@@ -65,8 +65,8 @@ export function validateTeamConfig(input: unknown): ValidationResult {
       for (const [key, value] of Object.entries(input.settings)) {
         if (key.trim() === '' || key !== key.trim() || key === '__proto__') {
           errors.push(`Ungültiger Settings-Schlüssel "${key}".`);
-        } else if (key.startsWith(RESERVED_SETTINGS_PREFIX)) {
-          errors.push(`"${key}": Einstellungen von Team Sync selbst können nicht zentral gesetzt werden.`);
+        } else if (RESERVED_SETTINGS.has(key)) {
+          errors.push(`"${key}": steuert den Sync selbst und kann nicht zentral gesetzt werden.`);
         } else {
           settings[key] = value;
         }

@@ -60,9 +60,14 @@ describe('validateTeamConfig', () => {
     assert.match(result.warnings.join(), /deinstalliert keine/);
   });
 
-  it('refuses settings of the extension itself', () => {
-    const result = validateTeamConfig({ version: 1, settings: { 'teamSync.configUrl': 'https://evil.example' } });
-    assert.ok(!result.ok);
+  it('refuses settings that control the sync itself', () => {
+    for (const key of ['teamSync.configUrl', 'teamSync.syncIntervalMinutes']) {
+      assert.equal(validateTeamConfig({ version: 1, settings: { [key]: 'x' } }).ok, false);
+    }
+  });
+
+  it('accepts the Markdown settings of the extension', () => {
+    assert.ok(validateTeamConfig({ version: 1, settings: { 'teamSync.markdown.tableClass': 'table' } }).ok);
   });
 
   it('warns about unknown keys and duplicates but stays valid', () => {

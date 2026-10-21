@@ -1,6 +1,8 @@
 # Team Sync
 
-Keep VS Code settings and extensions consistent across your whole team. Team Sync loads one central `team-config.json` from a URL, installs and removes extensions and writes the shared settings into every team member's user settings.
+Keep VS Code settings and extensions consistent across your whole team. Team Sync loads one central `team-config.json` from a URL, installs missing extensions and writes the shared settings into every team member's user settings.
+
+It also ships Markdown tools for teams that write content in Markdown: formatting commands, an editor toolbar and "copy as HTML" with configurable output (for example Bootstrap table classes for an online shop).
 
 ## Features
 
@@ -13,6 +15,16 @@ Keep VS Code settings and extensions consistent across your whole team. Team Syn
 - **Private configs**: optional bearer token, stored in the operating system's secure storage.
 - **Status bar**: shows the applied config version and the sync state, a click syncs immediately.
 - **Robust**: network errors, invalid JSON or a missing URL are logged in the output channel "Team Sync" and never break VS Code.
+
+### Markdown tools
+
+- **Formatting commands**: bold, italic, strikethrough, inline code, headings 1 to 6, bullet and numbered lists, checklists, quotes, code blocks, links, images and tables. Each command toggles: run it again to remove the formatting.
+- **Works like you expect**: multiple cursors, one undo step per command, the word at the cursor is used when nothing is selected (umlauts included), spaces stay outside the markers, lists convert into each other.
+- **Tables from pasted data**: select lines separated by tabs (e.g. copied from a spreadsheet) and run "Tabelle einfügen".
+- **Links**: a URL on the clipboard is suggested, running the command on a link removes it again.
+- **Toolbar**: optional buttons in the editor title bar of Markdown files, each one switched on by a setting. The Markdown preview can get a "copy as HTML" button too.
+- **Copy as HTML**: converts the document or selection with [markdown-it](https://github.com/markdown-it/markdown-it). Table classes, removal of empty table headers, line breaks, typography and quote characters are configurable.
+- All commands are in the editor context menu under **Markdown** and in the command palette under **Markdown:**.
 
 ## Setup
 
@@ -51,7 +63,7 @@ Keep VS Code settings and extensions consistent across your whole team. Team Syn
 | --- | --- | --- |
 | `version` | yes | Integer >= 0. Increase it on every change. Clients apply the config whenever it differs from the version they applied last. |
 | `extensions.install` | no | Extension IDs (`publisher.name`) to install when missing. Extensions that are already installed, or not listed, are left alone. |
-| `settings` | no | Settings written to the user settings. `null` removes a setting. Language overrides such as `"[markdown]"` are merged into the user's existing override (`null` inside removes a single entry), all other values replace the user's value. Settings of Team Sync itself (`teamSync.*`) cannot be set this way. |
+| `settings` | no | Settings written to the user settings. `null` removes a setting. Language overrides such as `"[markdown]"` are merged into the user's existing override (`null` inside removes a single entry), all other values replace the user's value. `teamSync.configUrl` and `teamSync.syncIntervalMinutes` cannot be set this way, all other `teamSync.*` settings (e.g. the Markdown tools) can. |
 
 Team Sync remembers which settings values it wrote. When a setting disappears from the config, it is removed from the user settings, but only if it still has the team value.
 
@@ -77,6 +89,16 @@ It writes `team/team-config.json` and increases `version` only when something ch
 | Team Sync: Token setzen | Stores the bearer token (leave empty to remove it). |
 | Team Sync: Token entfernen | Removes the stored token. |
 | Team Sync: Log anzeigen | Opens the output channel "Team Sync". |
+| Markdown: Fett, Kursiv, Durchgestrichen, Code im Text | Toggle inline formatting. |
+| Markdown: Überschrift ... | Pick a heading level; the current level is checked and picking it again removes the heading. With an argument (`1` to `6`, e.g. in a keybinding) the level is applied directly. |
+| Markdown: Überschrift 1 to 6 | Set, change or remove a heading directly. |
+| Markdown: Aufzählung, Nummerierte Liste, Checkliste, Zitat, Codeblock | Toggle the format on the selected lines. |
+| Markdown: Link, Bild | Insert or remove a link or image. |
+| Markdown: Tabelle einfügen (ohne/mit Kopfzeile) | Insert a table or convert the selected lines into one. |
+| Markdown: Formatierung auswählen ... | Pick any of the commands above from a list. |
+| Markdown: Als HTML kopieren | Copies the document or selection as HTML. |
+
+No keyboard shortcuts are assigned by default, so nothing collides with other Markdown extensions. Assign your own via **Preferences: Open Keyboard Shortcuts** (search for `teamSync.markdown`).
 
 ## Settings
 
@@ -84,6 +106,17 @@ It writes `team/team-config.json` and increases `version` only when something ch
 | --- | --- | --- |
 | `teamSync.configUrl` | `""` | URL of `team-config.json`. HTTPS only, plain HTTP only for `localhost`. |
 | `teamSync.syncIntervalMinutes` | `60` | Interval of the automatic sync in minutes (5 to 1440). |
+| `teamSync.markdown.bulletMarker` | `-` | Marker for bullet lists and checklists (`-`, `*`, `+`). |
+| `teamSync.markdown.boldMarker` | `**` | Marker for bold text (`**` or `__`). |
+| `teamSync.markdown.italicMarker` | `_` | Marker for italic text (`_` or `*`). |
+| `teamSync.markdown.toolbar.<button>` | `false` | Show a toolbar button: `heading` (picker for levels 1 to 6), `bold`, `italic`, `strikethrough`, `bullets`, `numbers`, `checkboxes`, `quote`, `link`, `image`, `table`, `copyAsHtml`. `more` adds a dropdown with every formatting command that has no button of its own. `previewCopyAsHtml` adds a "copy as HTML" button to the Markdown preview. |
+| `teamSync.markdown.tableClass` | `table table-sm align-top table-hover` | CSS classes for `<table>` in the HTML, empty for none. |
+| `teamSync.markdown.removeEmptyTableHeader` | `true` | Drop table header rows whose cells are all empty (`\| \| \|`). |
+| `teamSync.markdown.breaks` | `true` | Single line breaks become `<br>`. |
+| `teamSync.markdown.typographer` | `true` | Typographic dashes, ellipsis and quotes. |
+| `teamSync.markdown.quotes` | `„“‚‘` | Quote characters for the typographer (double open, double close, single open, single close). |
+| `teamSync.markdown.linkify` | `true` | Turn URLs in the text into links. |
+| `teamSync.markdown.html` | `false` | Pass HTML tags in the Markdown through instead of escaping them. |
 
 ## Security notes
 

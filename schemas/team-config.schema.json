@@ -34,7 +34,10 @@
       "description": "Written to the user settings. A value of null removes the user setting. Settings dropped from this object are reset on clients that still have the team value.",
       "propertyNames": {
         "not": {
-          "pattern": "^teamSync\\."
+          "enum": [
+            "teamSync.configUrl",
+            "teamSync.syncIntervalMinutes"
+          ]
         }
       }
     }

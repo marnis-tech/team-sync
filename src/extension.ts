@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { registerMarkdownCommands } from './markdown/commands';
 import { SyncStatusBar } from './statusBar';
 import { runSync, SyncDeps, SyncResult } from './sync';
 import { errorMessage } from './util/json';
@@ -33,6 +34,7 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand(COMMAND_SET_TOKEN, () => setToken(context, controller, channel)),
     vscode.commands.registerCommand(COMMAND_CLEAR_TOKEN, () => clearToken(context, channel)),
     vscode.commands.registerCommand(COMMAND_SHOW_LOG, () => channel.show()),
+    ...registerMarkdownCommands(channel),
     vscode.workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration('teamSync.syncIntervalMinutes')) {
         scheduler.restart();

@@ -4,6 +4,8 @@
 
 Team Sync lädt eine zentrale `team-config.json` von der URL aus `teamSync.configUrl`, installiert fehlende Extensions und schreibt Einstellungen in die User Settings der Teammitglieder. Extensions werden nie deinstalliert oder deaktiviert: Team Sync ergänzt nur, was für die gemeinsamen Settings gebraucht wird. Angewendet wird nur, wenn sich `version` gegenüber der zuletzt angewendeten Version (im `globalState`) unterscheidet. Die README.md ist die Marketplace-Seite und deshalb englisch.
 
+Dazu bringt Team Sync Markdown-Werkzeuge mit: Formatierungsbefehle, eine Toolbar und „Als HTML kopieren" im Format für den Shop. Sie ersetzen die Extensions „Markdown Shortcuts", „Copy Markdown as HTML" und „Customize Toolbar".
+
 ## Aufbau
 
 | Datei | Aufgabe |
@@ -16,10 +18,14 @@ Team Sync lädt eine zentrale `team-config.json` von der URL aus `teamSync.confi
 | `src/statusBar.ts` | Status-Bar-Eintrag |
 | `src/teamConfigBuilder.ts`, `src/cli/buildTeamConfig.ts` | Generator: `team/settings.json` + `team/extensions.json` werden zu `team/team-config.json` |
 | `src/util/json.ts` | JSONC-Parser (Kommentare, Trailing Commas), Vergleich von JSON-Werten |
+| `src/markdown/editing.ts` | Textlogik der Markdown-Befehle ohne VS-Code-Abhängigkeit (Inline-Formate, Zeilenformate, Tabellen, Links) |
+| `src/markdown/commands.ts` | Registrierung der Markdown-Befehle, Anwendung auf den Editor (mehrere Cursor, ein Undo-Schritt), „Als HTML kopieren" |
+| `src/markdown/html.ts` | Markdown zu HTML mit markdown-it, Tabellenklassen, leere Kopfzeilen entfernen |
 | `schemas/team-config.schema.json` | JSON-Schema, das VS Code für Dateien namens `team-config.json` nutzt |
 | `test/*.test.ts` | Unit-Tests mit `node:test`, ohne VS Code |
+| `test-integration/` | Integrationstests in einem echten VS Code (Befehle, Zwischenablage, Sync gegen lokalen Server) |
 
-Die Logik in `sync.ts`, `loadConfig.ts` und `config.ts` kennt VS Code nicht und ist deshalb vollständig per Unit-Test prüfbar. Alles, was die VS Code API braucht, steckt in `vscodeAdapters.ts`, `statusBar.ts` und `extension.ts`.
+Die Logik in `sync.ts`, `loadConfig.ts`, `config.ts` und `markdown/editing.ts`/`markdown/html.ts` kennt VS Code nicht und ist deshalb vollständig per Unit-Test prüfbar. Alles, was die VS Code API braucht, steckt in `vscodeAdapters.ts`, `statusBar.ts` und `extension.ts`.
 
 ## Verhalten im Detail
 
@@ -27,7 +33,7 @@ Die Logik in `sync.ts`, `loadConfig.ts` und `config.ts` kennt VS Code nicht und 
 - Teilfehler: Schlägt ein Schritt fehl, laufen die übrigen weiter. Der Stand wird dann nicht gespeichert, der nächste Sync versucht alles erneut (bereits installierte Extensions und gleiche Einstellungen werden übersprungen).
 - Gestrichene Einstellungen: Im `globalState` (`teamSync.appliedState`) liegen die zuletzt angewendete Version und die Werte, die die Team-Konfiguration gesetzt hat. Fehlt eine Einstellung in einer neuen Version, wird sie beim Nutzer entfernt, aber nur, wenn sie noch den Team-Wert hat. Hat der Nutzer sie selbst geändert, bleibt sie. Bei Sprach-Overrides gilt das pro Eintrag. Kann eine Einstellung nicht zurückgesetzt werden (meist, weil die zugehörige Extension fehlt), gibt es nur eine Warnung im Log.
 - `null` als Wert in `settings` entfernt die Einstellung aus den User Settings.
-- Einstellungen `teamSync.*` sind von der Team-Konfiguration ausgenommen, und `teamSync.configUrl` hat `scope: application`. Ein Workspace oder die Team-Konfiguration selbst kann die Quelle also nicht umbiegen.
+- `teamSync.configUrl` und `teamSync.syncIntervalMinutes` sind von der Team-Konfiguration ausgenommen, und `teamSync.configUrl` hat `scope: application`. Alle anderen `teamSync.*`-Einstellungen (z. B. die Markdown-Werkzeuge) dürfen zentral gesetzt werden. Ein Workspace oder die Team-Konfiguration selbst kann die Quelle also nicht umbiegen.
 - Wird `teamSync.configUrl` geändert, folgt sofort ein erzwungener Sync, weil eine neue Quelle Versionsnummern wiederverwenden kann.
 - Benachrichtigungen: Bei automatischen Syncs nur, wenn sich etwas geändert hat. Fehler zeigt dann nur die Status-Bar, Details stehen im Output "Team Sync". Beim manuellen Sync wird immer ein Ergebnis angezeigt.
 
@@ -50,6 +56,8 @@ Hinweis: Wird die Quelle für mehrere Teams gebraucht, reicht ein weiterer Ordne
 npm install
 npm run build        # Typecheck + Bundle nach dist/extension.js
 npm test             # Unit-Tests
+npm run test:integration   # Integrationstests in VS Code 1.90 (lädt VS Code beim ersten Mal nach .vscode-test/)
+VSCODE_VERSION=stable npm run test:integration   # dasselbe mit der aktuellen VS-Code-Version
 npm run watch        # Bundle bei Änderungen neu bauen
 npm run package      # team-sync-<version>.vsix erzeugen
 ```
@@ -61,6 +69,9 @@ Zum Ausprobieren in VS Code: `npm run package`, dann `code --install-extension t
 - Neue Felder in der `team-config.json`: Typ und Validierung in `src/config.ts`, Anwendung in `src/sync.ts`, Schema in `schemas/team-config.schema.json`, Tests ergänzen. Unbekannte Felder erzeugen in älteren Versionen nur eine Warnung, neue Felder brechen alte Installationen also nicht.
 - Neue Einstellungen der Extension: `contributes.configuration` in `package.json`, Zugriff über `vscode.workspace.getConfiguration('teamSync')`.
 - Neue Befehle: `contributes.commands` in `package.json` und `registerCommand` in `src/extension.ts`.
+- Neue Markdown-Befehle: Textlogik als reine Funktion in `src/markdown/editing.ts` (mit Unit-Test), Registrierung in der Liste in `src/markdown/commands.ts`, Eintrag in `contributes.commands`, `menus` (Kontextmenü `teamSync.markdown.context`, `commandPalette`) und bei Bedarf ein Toolbar-Schalter `teamSync.markdown.toolbar.<id>` in `package.json`. Ein Integrationstest in `test-integration/suite/index.ts` prüft das Zusammenspiel mit dem Editor.
+- Testdaten: Das Repo ist öffentlich. In Tests, Beispielen und Doku nur erfundene Texte verwenden, keine Kundentexte, Produktnamen oder kundenspezifischen Platzhalter.
+- Tastenkürzel vergibt Team Sync bewusst nicht, weil „Markdown All in One" Strg+B/Strg+I bereits belegt.
 - Texte der Oberfläche sind Deutsch, Code und Kommentare Englisch.
 
 ## Release (Update der Extension)

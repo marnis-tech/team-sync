@@ -21,13 +21,20 @@ Build a VS Code extension "team-sync" (publisher: marnis-tech) in TypeScript tha
   "settings": { "editor.formatOnSave": true }
 }
 ```
-Runtime validation: root object; `version` integer >= 0 (required); `extensions` and `settings` optional objects; extension IDs match `publisher.name`; `extensions.uninstall` is ignored with a warning; settings keys starting with `teamSync.` are an error; unknown keys and duplicate IDs are warnings only. Ship a JSON schema and register it via `contributes.jsonValidation` for `team-config.json`.
+Runtime validation: root object; `version` integer >= 0 (required); `extensions` and `settings` optional objects; extension IDs match `publisher.name`; `extensions.uninstall` is ignored with a warning; settings keys `teamSync.configUrl` and `teamSync.syncIntervalMinutes` are an error; unknown keys and duplicate IDs are warnings only. Ship a JSON schema and register it via `contributes.jsonValidation` for `team-config.json`.
+
+## Markdown tools
+- Commands (category "Markdown", ids `teamSync.markdown.*`): bold, italic, strikethrough, inline code, heading 1 to 6, bullets, numbered list, checklist, quote, code block, link, image, table without header (empty header row), table with header, a heading picker (levels 1 to 6, the current level is checked, picking it removes the heading), a quick pick of all formatting commands, copy as HTML. Every command toggles. Multiple cursors, one undo step, word at cursor when nothing is selected (Unicode letters), whitespace stays outside inline markers, list types convert into each other, numbering per indentation, tables from tab, pipe or double-space separated lines, link command suggests a URL from the clipboard and removes an existing link.
+- Text logic as pure functions (unit tested), VS Code wiring separate. Editor context submenu "Markdown", command palette only for Markdown editors, optional editor title toolbar buttons enabled by boolean settings `teamSync.markdown.toolbar.<id>`, plus a "more" dropdown (submenu with icon) listing every command that has no toolbar button of its own (`when: !config.teamSync.markdown.toolbar.<id>`). No default keybindings.
+- Settings: `teamSync.markdown.bulletMarker`, `boldMarker`, `italicMarker`; for copy as HTML (markdown-it): `tableClass` (default `table table-sm align-top table-hover`), `removeEmptyTableHeader` (drop a header row whose cells are all empty), `breaks`, `linkify`, `typographer`, `quotes` (default German quotes), `html`.
+- Only `teamSync.configUrl` and `teamSync.syncIntervalMinutes` are reserved; all other `teamSync.*` settings may be set by the team config.
+- Integration tests with `@vscode/test-electron` against VS Code 1.90 and stable. Test data must be fictional (public repo).
 
 ## Generator
 `npm run team-config` builds `team/team-config.json` from `team/settings.json` (JSONC, VS Code settings format) and `team/extensions.json` (JSONC, `.vscode/extensions.json` format: `recommendations` = install, `unwantedRecommendations` ignored with a warning; `install` also accepted; `extension.json` also accepted). The version is increased only when content changed; `--version N` sets it explicitly, `--check` fails if the file is outdated. An unreadable previous file without `--version` is an error (never reset the version).
 
 ## Project
-- Node 22, esbuild bundle (`dist/extension.js`, cjs, external `vscode`), native fetch, no runtime dependencies.
+- Node 22, esbuild bundle (`dist/extension.js`, cjs, external `vscode`), native fetch, `markdown-it` as the only runtime dependency (bundled).
 - Marketplace-ready `package.json`: displayName, description, license MIT, repository, icon, categories, `engines.vscode` ^1.90.0, `@types/vscode` 1.90.0.
 - README.md (marketplace page, English) with setup and example config, LICENSE, `.vscodeignore` (ship only bundle, schema, icon, docs), CHANGELOG.md, `example/team-config.json`.
 - Unit tests with `node:test` for validation, loading and sync logic (sync logic must not import `vscode`; inject dependencies).
